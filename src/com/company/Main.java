@@ -10,7 +10,7 @@ import java.util.*;
 public class Main {
 
     private static ArrayList<String> numberPlatesArrayList = new ArrayList<>();
-    private static ArrayList<String> numberPlatesArrayListSorted;
+    private static ArrayList<String> numberPlatesArrayListSorted = new ArrayList<>();
     private static HashSet<String> numberPlatesHashSet = new HashSet<>();
     private static TreeSet<String> numberPlatesTreeSet = new TreeSet<>();
 
@@ -20,12 +20,20 @@ public class Main {
     private static final String FORMAT_END = (char) 27 + "[0m";
 
     private enum SearchType {
-        UNSORTED, HASH_SET, TREE_SET, BINARY
+        UNSORTED, HASH_SET, TREE_SET, BINARY, HASH_SET_NATIVE, TREE_SET_NATIVE
     }
 
     public static void main(String[] args) {
 
+        System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
         generateNumberPlates();
+
+        System.out.print(FORMAT_INFO + "\rПодготовка данных..." + FORMAT_END);
+        Collections.shuffle(numberPlatesArrayList);
+        Collections.sort(numberPlatesArrayListSorted);
+
+        System.out.println("\r" + FORMAT_INFO + "Номеров в базе: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
+        System.out.println(numberPlatesArrayList.get(1500000));
 
         for (; ; ) {
             System.out.println("Введите номер для поиска: ");
@@ -46,8 +54,16 @@ public class Main {
                     handleResult(position, input, getElapsedTime(start), SearchType.HASH_SET);
 
                     start = System.nanoTime();
+                    position = searchNative(input, numberPlatesHashSet);
+                    handleResult(position, input, getElapsedTime(start), SearchType.HASH_SET_NATIVE);
+
+                    start = System.nanoTime();
                     position = search(input, numberPlatesTreeSet);
                     handleResult(position, input, getElapsedTime(start), SearchType.TREE_SET);
+
+                    start = System.nanoTime();
+                    position = searchNative(input, numberPlatesTreeSet);
+                    handleResult(position, input, getElapsedTime(start), SearchType.TREE_SET_NATIVE);
 
                 }
             } catch (IOException e) {
@@ -68,13 +84,19 @@ public class Main {
                 searchTarget = "Несортированный";
                 break;
             case HASH_SET:
-                searchTarget = "HashSet";
+                searchTarget = "HashSet (Последовательный)";
                 break;
             case TREE_SET:
-                searchTarget = "TreeSet";
+                searchTarget = "TreeSet (Последовательный)";
                 break;
             case BINARY:
                 searchTarget = "Бинарный поиск";
+                break;
+            case HASH_SET_NATIVE:
+                searchTarget = "HashSet (Нативный)";
+                break;
+            case TREE_SET_NATIVE:
+                searchTarget = "TreeSet (Нативный)";
                 break;
         }
         if (result < 0) {
@@ -91,8 +113,11 @@ public class Main {
         return -1;
     }
 
+    private static int searchNative(String data, Collection<String> set) {
+        return set.contains(data) ? 1 : 0;
+    }
+
     private static void generateNumberPlates() {
-        System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
         ArrayList<String> regionNumbers = getRegions();
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
 
@@ -102,13 +127,6 @@ public class Main {
             }
             fillRegionUniqueSpecialNumbersList(region);
         }
-
-        Collections.shuffle(numberPlatesArrayList);
-        numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
-        Collections.sort(numberPlatesArrayListSorted);
-
-        System.out.println("\r" + FORMAT_INFO + "Номеров в базе: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
-        System.out.println(numberPlatesArrayList.get(1500000));
     }
 
 
@@ -134,12 +152,12 @@ public class Main {
                 addToCollections(generate(y, region, 'О', 'О', 'М'));
                 addToCollections(generate(y, region, 'О', 'Т', 'Т'));
             }
-
         }
     }
 
     private static void addToCollections(String data) {
         numberPlatesArrayList.add(data);
+        numberPlatesArrayListSorted.add(data);
         numberPlatesHashSet.add(data);
         numberPlatesTreeSet.add(data);
     }
