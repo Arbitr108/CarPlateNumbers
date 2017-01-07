@@ -3,35 +3,55 @@ package com.company;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class Main {
 
-    private static char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
     private static ArrayList<String> regionNumbers = new ArrayList<>();
-    public static final String FORMAT_INFO = (char) 27 + "[37m";
-    public static final String FORMAT_SUCCESS = (char) 27 + "[32m";
-    public static final String FORMAT_FAIL = (char) 27 + "[31m";
-    public static final String FORMAT_END = (char) 27 + "[0m";
-    private static ArrayList<String> numberPlatesArrayList;
+    private static ArrayList<String> numberPlatesArrayList = new ArrayList<>();
+    private static ArrayList<String> numberPlatesArrayListSorted;
+    private static HashSet<String> numberPlatesHashSet = new HashSet<>();
+    private static TreeSet<String> numberPlatesTreeSet = new TreeSet<>();
+
+    private static final String FORMAT_INFO = (char) 27 + "[37m";
+    private static final String FORMAT_SUCCESS = (char) 27 + "[32m";
+    private static final String FORMAT_FAIL = (char) 27 + "[31m";
+    private static final String FORMAT_END = (char) 27 + "[0m";
+
+    private enum SearchType {
+        UNSORTED, HASH_SET, TREE_SET, BINARY
+    }
 
     public static void main(String[] args) {
 
-        initCarPlateNumbersDb();
+        initRegions();
+
+        generateNumberPlates();
+
         for (; ; ) {
             System.out.println("Введите номер для поиска: ");
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             try {
                 String input = reader.readLine().trim().toUpperCase();
                 if (!input.isEmpty()) {
-                    long start = System.currentTimeMillis();
-                    int position = search(input);
-                    long elapsed = System.currentTimeMillis() - start;
-                    if (position < 0) {
-                        System.out.println(FORMAT_FAIL + "\rНомера " + input + " нет в базе" + "(" + elapsed + "ms)" + FORMAT_END);
-                    } else
-                        System.out.println(FORMAT_SUCCESS + "\rНомер " + input + " найден" + "(" + elapsed + "ms)" + FORMAT_END);
+                    long start = System.nanoTime();
+                    int position = search(input, numberPlatesArrayList);
+                    handleResult(position, input, getElapsedTime(start), SearchType.UNSORTED);
+
+                    start = System.nanoTime();
+                    position = Collections.binarySearch(numberPlatesArrayListSorted, input);
+                    handleResult(position, input, getElapsedTime(start), SearchType.BINARY);
+
+                    start = System.nanoTime();
+                    position = search(input, numberPlatesHashSet);
+                    handleResult(position, input, getElapsedTime(start), SearchType.HASH_SET);
+
+                    start = System.nanoTime();
+                    position = search(input, numberPlatesTreeSet);
+                    handleResult(position, input, getElapsedTime(start), SearchType.TREE_SET);
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -39,116 +59,115 @@ public class Main {
         }
     }
 
-    private static void initCarPlateNumbersDb() {
-        initRegions();
-        generateNumberPlates();
+    private static float getElapsedTime(long start) {
+        return (System.nanoTime() - start) / 1000000f;
     }
 
-    private static int search(String data) {
+    private static void handleResult(int result, String input, float elapsed, SearchType type) {
+        String searchTarget = "";
+        NumberFormat formatter = new DecimalFormat("#0.000000");
+        switch (type) {
+            case UNSORTED:
+                searchTarget = "Несортированный";
+                break;
+            case HASH_SET:
+                searchTarget = "HashSet";
+                break;
+            case TREE_SET:
+                searchTarget = "TreeSet";
+                break;
+            case BINARY:
+                searchTarget = "Бинарный поиск";
+                break;
+        }
+        if (result < 0) {
+            System.out.println(FORMAT_FAIL + "\r" + searchTarget + ". Номера " + input + " нет в базе" + "(" + formatter.format(elapsed) + "ms)" + FORMAT_END);
+        } else
+            System.out.println(FORMAT_SUCCESS + "\r" + searchTarget + ". Номер " + input + " найден" + "(" + formatter.format(elapsed) + "ms)" + FORMAT_END);
+    }
 
-        for (int i = 0; i < numberPlatesArrayList.size(); i++) {
-            if (data.equals(numberPlatesArrayList.get(i)))
-                return i;
+    private static int search(String data, Collection<String> set) {
+        for (String item : set) {
+            if (item.equals(data))
+                return 1;
         }
         return -1;
     }
 
-    public static void generateNumberPlates() {
+
+    private static void generateNumberPlates() {
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
+        char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
+        for (String region : regionNumbers) {
+            for (char allowedLetter : allowedLetters) {
+                fillCommonList(region, allowedLetter);
+            }
+            fillSpecialList(region);
+        }
+        numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
+        Collections.shuffle(numberPlatesArrayList);
+        Collections.sort(numberPlatesArrayListSorted);
+
+        System.out.println("\r" + FORMAT_INFO + "Номеров в базе: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
+        System.out.println(numberPlatesArrayList.get(1500000));
+    }
+
+
+    private static void fillSpecialList(String region) {
         String[] moscowRegionList = {"77", "97", "99", "177", "197"};
         String[] piterRegionList = {"78", "98"};
-        numberPlatesArrayList = new ArrayList<>();
-        for (String region : regionNumbers) {
-            for (int i = 0; i < allowedLetters.length; i++) {
-                for (int y = 0; y < 1000; y++) {
-                    String number;
-                    if (y < 10)
-                        number = "00" + String.valueOf(y);
-                    else if (y >= 10 && y < 100)
-                        number = "0" + String.valueOf(y);
-                    else
-                        number = String.valueOf(y);
-                    numberPlatesArrayList.add(allowedLetters[i] + number + allowedLetters[i] + allowedLetters[i] + region);
-                }
-            }
-            for (int y = 0; y < 1000; y++) {
-                String number;
-                if (y < 10)
-                    number = "00" + String.valueOf(y);
-                else if (y >= 10 && y < 100)
-                    number = "0" + String.valueOf(y);
-                else
-                    number = String.valueOf(y);
-                numberPlatesArrayList.add("Е" + number + "КХ" + region);
-            }
-
+        for (int y = 0; y < 1000; y++) {
+            addToCollections(generate(y, region, 'Е', 'К', 'Х'));
             if (Arrays.asList(moscowRegionList).contains(region)) {
-                for (int y = 0; y < 1000; y++) {
-                    String number;
-                    if (y < 10)
-                        number = "00" + String.valueOf(y);
-                    else if (y >= 10 && y < 100)
-                        number = "0" + String.valueOf(y);
-                    else
-                        number = String.valueOf(y);
-                    numberPlatesArrayList.add("А" + number + "МР" + region);
-                    numberPlatesArrayList.add("А" + number + "ОО" + region);
-                    numberPlatesArrayList.add("А" + number + "МО" + region);
-                    numberPlatesArrayList.add("В" + number + "ОО" + region);
-                    numberPlatesArrayList.add("С" + number + "ОО" + region);
-                    numberPlatesArrayList.add("М" + number + "ОО" + region);
-                    numberPlatesArrayList.add("М" + number + "МР" + region);
-                    numberPlatesArrayList.add("Р" + number + "МР" + region);
-                }
+                addToCollections(generate(y, region, 'А', 'М', 'Р'));
+                addToCollections(generate(y, region, 'А', 'О', 'О'));
+                addToCollections(generate(y, region, 'А', 'М', 'О'));
+                addToCollections(generate(y, region, 'В', 'О', 'О'));
+                addToCollections(generate(y, region, 'С', 'О', 'О'));
+                addToCollections(generate(y, region, 'М', 'М', 'Р'));
+                addToCollections(generate(y, region, 'М', 'М', 'Р'));
+                addToCollections(generate(y, region, 'Р', 'М', 'Р'));
             }
-
             if (Arrays.asList(piterRegionList).contains(region)) {
-                for (int y = 0; y < 1000; y++) {
-                    String number;
-                    if (y < 10)
-                        number = "00" + String.valueOf(y);
-                    else if (y >= 10 && y < 100)
-                        number = "0" + String.valueOf(y);
-                    else
-                        number = String.valueOf(y);
-                    numberPlatesArrayList.add("О" + number + "КО" + region);
-                    numberPlatesArrayList.add("О" + number + "АО" + region);
-                    numberPlatesArrayList.add("О" + number + "ОС" + region);
-                    numberPlatesArrayList.add("О" + number + "ОМ" + region);
-                    numberPlatesArrayList.add("О" + number + "ТТ" + region);
-                }
+                addToCollections(generate(y, region, 'О', 'К', 'О'));
+                addToCollections(generate(y, region, 'О', 'А', 'О'));
+                addToCollections(generate(y, region, 'О', 'О', 'С'));
+                addToCollections(generate(y, region, 'О', 'О', 'М'));
+                addToCollections(generate(y, region, 'О', 'Т', 'Т'));
             }
 
         }
-        System.out.println("\r" +
-                FORMAT_INFO + "Номеров в базе: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
     }
 
-    public static void initRegions() {
+    private static void addToCollections(String data) {
+        numberPlatesArrayList.add(data);
+        numberPlatesHashSet.add(data);
+        numberPlatesTreeSet.add(data);
+    }
+
+    private static void fillCommonList(String region, char allowedLetter) {
+        for (int y = 0; y < 1000; y++) {
+            addToCollections(generate(y, region, allowedLetter, allowedLetter, allowedLetter));
+        }
+    }
+
+    private static String generate(int order, String region, char firstLetter, char secondLetter, char thirdLetter) {
+        String number;
+        if (order < 10)
+            number = "00" + String.valueOf(order);
+        else if (order >= 10 && order < 100)
+            number = "0" + String.valueOf(order);
+        else
+            number = String.valueOf(order);
+        return firstLetter + number + secondLetter + thirdLetter + region;
+    }
+
+    private static void initRegions() {
+        //Стандартные коды
         for (int i = 1; i < 100; i++) {
             regionNumbers.add(i < 10 ? '0' + String.valueOf(i) : String.valueOf(i));
         }
-        /**
-         *
-         102  Код региона Республика Башкортостан    (также 02)
-         116  Код региона Республика Татарстан    (также 16)
-         118  Код региона Удмуртская Республика    (также 18)
-         121  Код региона Чувашская Республика    (также 21)
-         125  Код региона Приморский край    (также 25)
-         138  Код региона Иркутская область    (также 38)
-         150  Код региона Московская область    (также 50, 90)
-         152  Код региона Нижегородская область    (также 52)
-         154  Код региона Новосибирская область    (также 54)
-         159  Код региона Пермская область    (также 59)
-         161  Код региона Ростовская область    (также 61)
-         163  Код региона Самарская область    (также 63)
-         164  Код региона Саратовская область    (также 64)
-         173  Код региона Ульяновская область    (также 73)
-         174   Код региона Челябинская область    (также 74)
-         177  Код региона г. Москва    (также 77, 97, 99, 197, 199)
-         197  Код региона г. Москва    (также 77, 97, 99, 177, 199)
-         199  Код региона г. Москва    (также 77, 97, 99, 177, 197)
-         */
+        //Доп. коды
         regionNumbers.add("102");
         regionNumbers.add("116");
         regionNumbers.add("118");
