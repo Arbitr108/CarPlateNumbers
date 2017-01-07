@@ -92,8 +92,8 @@ public class Main {
     }
 
     private static void generateNumberPlates() {
-        ArrayList<String> regionNumbers = getRegions();
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
+        ArrayList<String> regionNumbers = getRegions();
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
