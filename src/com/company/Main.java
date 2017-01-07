@@ -9,7 +9,6 @@ import java.util.*;
 
 public class Main {
 
-    private static ArrayList<String> regionNumbers = new ArrayList<>();
     private static ArrayList<String> numberPlatesArrayList = new ArrayList<>();
     private static ArrayList<String> numberPlatesArrayListSorted;
     private static HashSet<String> numberPlatesHashSet = new HashSet<>();
@@ -92,9 +91,8 @@ public class Main {
         return -1;
     }
 
-
     private static void generateNumberPlates() {
-        regionNumbers = getRegions();
+        ArrayList<String> regionNumbers = getRegions();
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
         for (String region : regionNumbers) {
