@@ -42,11 +42,6 @@ public class Main {
                 if (!input.isEmpty()) {
                     long start = System.nanoTime();
                     int position = search(input, numberPlatesArrayList);
-                    /**
-                     * TODO: Запахи кода "Мертвый код"
-                     * TODO:  просто удалим
-                     */
-                    float elapsed = getElapsedTime(start);
                     handleResult(position, input, getElapsedTime(start), SearchType.UNSORTED);
 
                     start = System.nanoTime();
@@ -95,13 +90,6 @@ public class Main {
             System.out.println(FORMAT_SUCCESS + "\r" + searchTarget + ". Номер " + input + " найден" + "(" + formatter.format(elapsed) + "ms)" + FORMAT_END);
     }
 
-    /**
-     * TODO: Запахи кода "Дублирование" (устранен)
-     * TODO: Здесь был устранен запах кода "Дублирование" за счет
-     * TODO: использования полиморфизма, вместо двух методов search
-     * TODO: с разной сигнатурой для Поиска в  Set и List коллекциях
-     * TODO: был создан один для поиска в коллекуиях типа Collecion
-     */
     private static int search(String data, Collection<String> set) {
         for (String item : set) {
             if (item.equals(data))
@@ -112,6 +100,7 @@ public class Main {
 
 
     private static void generateNumberPlates() {
+//        regionNumbers = getRegions();
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
         for (String region : regionNumbers) {
@@ -176,6 +165,12 @@ public class Main {
         else
             number = String.valueOf(order);
         return firstLetter + number + secondLetter + thirdLetter + region;
+    }
+
+    private static ArrayList<String> getRegions() {
+        ArrayList<String> regionNumbers = new ArrayList<>();
+
+        return regionNumbers;
     }
 
     /**
