@@ -26,12 +26,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        /**
-         * TODO: Запахи кода "Неуместная близость" возможно и "Зависливые функция" в отношении метода main
-         * TODO: Ему здесь не место, он уходит в generateNumberPlates
-         */
-        initRegions();
-
         generateNumberPlates();
 
         for (; ; ) {
@@ -100,7 +94,7 @@ public class Main {
 
 
     private static void generateNumberPlates() {
-//        regionNumbers = getRegions();
+        regionNumbers = getRegions();
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
         for (String region : regionNumbers) {
@@ -193,37 +187,5 @@ public class Main {
         regionNumbers.add("197");
         regionNumbers.add("199");
         return regionNumbers;
-    }
-
-    /**
-     * TODO: Запахи кода "Временное поле"
-     * TODO: Временное поле regionNumbers, оно используется только в одном методе
-     * TODO: нет смысла хранить данные в поле, достаточно их однажды сгенерировать
-     * TODO: и вернуть в метод, где они действительно нужны
-     */
-    private static void initRegions() {
-        //Стандартные коды
-        for (int i = 1; i < 100; i++) {
-            regionNumbers.add(i < 10 ? '0' + String.valueOf(i) : String.valueOf(i));
-        }
-        //Доп. коды
-        regionNumbers.add("102");
-        regionNumbers.add("116");
-        regionNumbers.add("118");
-        regionNumbers.add("121");
-        regionNumbers.add("125");
-        regionNumbers.add("138");
-        regionNumbers.add("150");
-        regionNumbers.add("152");
-        regionNumbers.add("154");
-        regionNumbers.add("159");
-        regionNumbers.add("161");
-        regionNumbers.add("163");
-        regionNumbers.add("164");
-        regionNumbers.add("173");
-        regionNumbers.add("174");
-        regionNumbers.add("177");
-        regionNumbers.add("197");
-        regionNumbers.add("199");
     }
 }
