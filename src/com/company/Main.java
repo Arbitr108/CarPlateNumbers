@@ -95,14 +95,16 @@ public class Main {
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
         ArrayList<String> regionNumbers = getRegions();
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
+
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
                 fillCommonList(region, allowedLetter);
             }
-            fillSpecialList(region);
+            fillRegionUniqueSpecialNumbersList(region);
         }
-        numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
+
         Collections.shuffle(numberPlatesArrayList);
+        numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
         Collections.sort(numberPlatesArrayListSorted);
 
         System.out.println("\r" + FORMAT_INFO + "Номеров в базе: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
@@ -110,12 +112,12 @@ public class Main {
     }
 
 
-    private static void fillSpecialList(String region) {
-        String[] moscowRegionList = {"77", "97", "99", "177", "197"};
-        String[] piterRegionList = {"78", "98"};
+    private static void fillRegionUniqueSpecialNumbersList(String region) {
+        String[] moscowRegionNumbersList = {"77", "97", "99", "177", "197"};
+        String[] piterRegionNumbersList = {"78", "98"};
         for (int y = 0; y < 1000; y++) {
             addToCollections(generate(y, region, 'Е', 'К', 'Х'));
-            if (Arrays.asList(moscowRegionList).contains(region)) {
+            if (Arrays.asList(moscowRegionNumbersList).contains(region)) {
                 addToCollections(generate(y, region, 'А', 'М', 'Р'));
                 addToCollections(generate(y, region, 'А', 'О', 'О'));
                 addToCollections(generate(y, region, 'А', 'М', 'О'));
@@ -125,7 +127,7 @@ public class Main {
                 addToCollections(generate(y, region, 'М', 'М', 'Р'));
                 addToCollections(generate(y, region, 'Р', 'М', 'Р'));
             }
-            if (Arrays.asList(piterRegionList).contains(region)) {
+            if (Arrays.asList(piterRegionNumbersList).contains(region)) {
                 addToCollections(generate(y, region, 'О', 'К', 'О'));
                 addToCollections(generate(y, region, 'О', 'А', 'О'));
                 addToCollections(generate(y, region, 'О', 'О', 'С'));
