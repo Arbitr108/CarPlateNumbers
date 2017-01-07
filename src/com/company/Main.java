@@ -26,6 +26,10 @@ public class Main {
 
     public static void main(String[] args) {
 
+        /**
+         * TODO: Запахи кода "Неуместная близость" возможно и "Зависливые функция" в отношении метода main
+         * TODO: Ему здесь не место, он уходит в generateNumberPlates
+         */
         initRegions();
 
         generateNumberPlates();
@@ -38,6 +42,11 @@ public class Main {
                 if (!input.isEmpty()) {
                     long start = System.nanoTime();
                     int position = search(input, numberPlatesArrayList);
+                    /**
+                     * TODO: Запахи кода "Мертвый код"
+                     * TODO:  просто удалим
+                     */
+                    float elapsed = getElapsedTime(start);
                     handleResult(position, input, getElapsedTime(start), SearchType.UNSORTED);
 
                     start = System.nanoTime();
@@ -86,6 +95,13 @@ public class Main {
             System.out.println(FORMAT_SUCCESS + "\r" + searchTarget + ". Номер " + input + " найден" + "(" + formatter.format(elapsed) + "ms)" + FORMAT_END);
     }
 
+    /**
+     * TODO: Запахи кода "Дублирование" (устранен)
+     * TODO: Здесь был устранен запах кода "Дублирование" за счет
+     * TODO: использования полиморфизма, вместо двух методов search
+     * TODO: с разной сигнатурой для Поиска в  Set и List коллекциях
+     * TODO: был создан один для поиска в коллекуиях типа Collecion
+     */
     private static int search(String data, Collection<String> set) {
         for (String item : set) {
             if (item.equals(data))
@@ -162,6 +178,12 @@ public class Main {
         return firstLetter + number + secondLetter + thirdLetter + region;
     }
 
+    /**
+     * TODO: Запахи кода "Временное поле"
+     * TODO: Временное поле regionNumbers, оно используется только в одном методе
+     * TODO: нет смысла хранить данные в поле, достаточно их однажды сгенерировать
+     * TODO: и вернуть в метод, где они действительно нужны
+     */
     private static void initRegions() {
         //Стандартные коды
         for (int i = 1; i < 100; i++) {
