@@ -169,7 +169,29 @@ public class Main {
 
     private static ArrayList<String> getRegions() {
         ArrayList<String> regionNumbers = new ArrayList<>();
-
+        //Стандартные коды
+        for (int i = 1; i < 100; i++) {
+            regionNumbers.add(i < 10 ? '0' + String.valueOf(i) : String.valueOf(i));
+        }
+        //Доп. коды
+        regionNumbers.add("102");
+        regionNumbers.add("116");
+        regionNumbers.add("118");
+        regionNumbers.add("121");
+        regionNumbers.add("125");
+        regionNumbers.add("138");
+        regionNumbers.add("150");
+        regionNumbers.add("152");
+        regionNumbers.add("154");
+        regionNumbers.add("159");
+        regionNumbers.add("161");
+        regionNumbers.add("163");
+        regionNumbers.add("164");
+        regionNumbers.add("173");
+        regionNumbers.add("174");
+        regionNumbers.add("177");
+        regionNumbers.add("197");
+        regionNumbers.add("199");
         return regionNumbers;
     }
 
