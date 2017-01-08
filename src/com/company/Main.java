@@ -10,7 +10,7 @@ import java.util.*;
 public class Main {
 
     private static ArrayList<String> numberPlatesArrayList = new ArrayList<>();
-    private static ArrayList<String> numberPlatesArrayListSorted = new ArrayList<>();
+    private static ArrayList<String> numberPlatesArrayListSorted;
     private static HashSet<String> numberPlatesHashSet = new HashSet<>();
     private static TreeSet<String> numberPlatesTreeSet = new TreeSet<>();
 
@@ -20,20 +20,31 @@ public class Main {
     private static final String FORMAT_END = (char) 27 + "[0m";
 
     private enum SearchType {
-        UNSORTED, HASH_SET, TREE_SET, BINARY, HASH_SET_NATIVE, TREE_SET_NATIVE
+        UNSORTED, HASH_SET, TREE_SET, BINARY
     }
 
     public static void main(String[] args) {
 
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
-        generateNumberPlates();
+        generateNumberPlatesCollections();
 
         System.out.print(FORMAT_INFO + "\rПодготовка данных..." + FORMAT_END);
         Collections.shuffle(numberPlatesArrayList);
         Collections.sort(numberPlatesArrayListSorted);
 
-        System.out.println("\r" + FORMAT_INFO + "Номеров в базе: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
-        System.out.println(numberPlatesArrayList.get(1500000));
+        System.out.println("\r" + FORMAT_INFO + "Номеров в несортированном ArrayList: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
+        System.out.println("\r" + FORMAT_INFO + "Номеров в сортированном ArrayList: " + FORMAT_SUCCESS + numberPlatesArrayListSorted.size() + FORMAT_END);
+        System.out.println("\r" + FORMAT_INFO + "Номеров в HashSet: " + FORMAT_SUCCESS + numberPlatesHashSet.size() + FORMAT_END);
+        System.out.println("\r" + FORMAT_INFO + "Номеров в TreeSet: " + FORMAT_SUCCESS + numberPlatesTreeSet.size() + FORMAT_END);
+
+//        for (String item : numberPlatesArrayListSorted){
+//            for(String candidate : numberPlatesArrayListSorted) {
+//                if (item.equals(candidate)) {
+//                    System.out.println(candidate);
+//                }
+//            }
+//        }
+        //System.out.println(numberPlatesArrayList.get(1500000));
 
         for (; ; ) {
             System.out.println("Введите номер для поиска: ");
@@ -54,16 +65,8 @@ public class Main {
                     handleResult(position, input, getElapsedTime(start), SearchType.HASH_SET);
 
                     start = System.nanoTime();
-                    position = searchNative(input, numberPlatesHashSet);
-                    handleResult(position, input, getElapsedTime(start), SearchType.HASH_SET_NATIVE);
-
-                    start = System.nanoTime();
                     position = search(input, numberPlatesTreeSet);
                     handleResult(position, input, getElapsedTime(start), SearchType.TREE_SET);
-
-                    start = System.nanoTime();
-                    position = searchNative(input, numberPlatesTreeSet);
-                    handleResult(position, input, getElapsedTime(start), SearchType.TREE_SET_NATIVE);
 
                 }
             } catch (IOException e) {
@@ -84,19 +87,13 @@ public class Main {
                 searchTarget = "Несортированный";
                 break;
             case HASH_SET:
-                searchTarget = "HashSet (Последовательный)";
+                searchTarget = "HashSet";
                 break;
             case TREE_SET:
-                searchTarget = "TreeSet (Последовательный)";
+                searchTarget = "TreeSet";
                 break;
             case BINARY:
                 searchTarget = "Бинарный поиск";
-                break;
-            case HASH_SET_NATIVE:
-                searchTarget = "HashSet (Нативный)";
-                break;
-            case TREE_SET_NATIVE:
-                searchTarget = "TreeSet (Нативный)";
                 break;
         }
         if (result < 0) {
@@ -113,11 +110,7 @@ public class Main {
         return -1;
     }
 
-    private static int searchNative(String data, Collection<String> set) {
-        return set.contains(data) ? 1 : 0;
-    }
-
-    private static void generateNumberPlates() {
+    private static void generateNumberPlatesCollections() {
         ArrayList<String> regionNumbers = getRegions();
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
 
@@ -127,6 +120,11 @@ public class Main {
             }
             fillRegionUniqueSpecialNumbersList(region);
         }
+
+        numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
+        numberPlatesHashSet.addAll(numberPlatesArrayList);
+        numberPlatesTreeSet.addAll(numberPlatesArrayList);
+
     }
 
 
@@ -134,37 +132,34 @@ public class Main {
         String[] moscowRegionNumbersList = {"77", "97", "99", "177", "197"};
         String[] piterRegionNumbersList = {"78", "98"};
         for (int y = 0; y < 1000; y++) {
-            addToCollections(generate(y, region, 'Е', 'К', 'Х'));
+            addToCollection(generate(y, region, 'Е', 'К', 'Х'));
             if (Arrays.asList(moscowRegionNumbersList).contains(region)) {
-                addToCollections(generate(y, region, 'А', 'М', 'Р'));
-                addToCollections(generate(y, region, 'А', 'О', 'О'));
-                addToCollections(generate(y, region, 'А', 'М', 'О'));
-                addToCollections(generate(y, region, 'В', 'О', 'О'));
-                addToCollections(generate(y, region, 'С', 'О', 'О'));
-                addToCollections(generate(y, region, 'М', 'М', 'Р'));
-                addToCollections(generate(y, region, 'М', 'М', 'Р'));
-                addToCollections(generate(y, region, 'Р', 'М', 'Р'));
+                addToCollection(generate(y, region, 'А', 'М', 'Р'));
+                addToCollection(generate(y, region, 'А', 'О', 'О'));
+                addToCollection(generate(y, region, 'А', 'М', 'О'));
+                addToCollection(generate(y, region, 'В', 'О', 'О'));
+                addToCollection(generate(y, region, 'С', 'О', 'О'));
+                addToCollection(generate(y, region, 'М', 'М', 'Р'));
+                addToCollection(generate(y, region, 'М', 'М', 'Р'));
+                addToCollection(generate(y, region, 'Р', 'М', 'Р'));
             }
             if (Arrays.asList(piterRegionNumbersList).contains(region)) {
-                addToCollections(generate(y, region, 'О', 'К', 'О'));
-                addToCollections(generate(y, region, 'О', 'А', 'О'));
-                addToCollections(generate(y, region, 'О', 'О', 'С'));
-                addToCollections(generate(y, region, 'О', 'О', 'М'));
-                addToCollections(generate(y, region, 'О', 'Т', 'Т'));
+                addToCollection(generate(y, region, 'О', 'К', 'О'));
+                addToCollection(generate(y, region, 'О', 'А', 'О'));
+                addToCollection(generate(y, region, 'О', 'О', 'С'));
+                addToCollection(generate(y, region, 'О', 'О', 'М'));
+                addToCollection(generate(y, region, 'О', 'Т', 'Т'));
             }
         }
     }
 
-    private static void addToCollections(String data) {
+    private static void addToCollection(String data) {
         numberPlatesArrayList.add(data);
-        numberPlatesArrayListSorted.add(data);
-        numberPlatesHashSet.add(data);
-        numberPlatesTreeSet.add(data);
     }
 
     private static void fillCommonList(String region, char allowedLetter) {
         for (int y = 0; y < 1000; y++) {
-            addToCollections(generate(y, region, allowedLetter, allowedLetter, allowedLetter));
+            addToCollection(generate(y, region, allowedLetter, allowedLetter, allowedLetter));
         }
     }
 
