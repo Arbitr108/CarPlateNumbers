@@ -13,6 +13,7 @@ public class Main {
     private static ArrayList<String> numberPlatesArrayListSorted;
     private static HashSet<String> numberPlatesHashSet = new HashSet<>();
     private static TreeSet<String> numberPlatesTreeSet = new TreeSet<>();
+    private static ArrayList<String> regionNumbers;
 
     private static final String FORMAT_INFO = (char) 27 + "[37m";
     private static final String FORMAT_SUCCESS = (char) 27 + "[32m";
@@ -26,6 +27,7 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
+        regionNumbers = getRegions();
         generateGeneralSeriaPlates();
         generateSpecialSeriaPlates();
 
@@ -115,9 +117,7 @@ public class Main {
     }
 
     private static void generateGeneralSeriaPlates() {
-        ArrayList<String> regionNumbers = getRegions();
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
-
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
                 for (int y = 0; y < 1000; y++) {
@@ -128,7 +128,6 @@ public class Main {
     }
 
     private static void generateSpecialSeriaPlates() {
-        ArrayList<String> regionNumbers = getRegions();
         String[] moscowRegionNumbersList = {"77", "97", "99", "177", "197"};
         String[] piterRegionNumbersList = {"78", "98"};
         for (String region : regionNumbers) {
