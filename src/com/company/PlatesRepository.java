@@ -9,13 +9,24 @@ import java.util.TreeSet;
  * Created by asus on 08.01.2017.
  */
 public class PlatesRepository {
-    private static ArrayList<String> numberPlatesArrayList = new ArrayList<>();
+    private static ArrayList<String> numberPlatesArrayList;
     private static ArrayList<String> numberPlatesArrayListSorted;
-    private static HashSet<String> numberPlatesHashSet = new HashSet<>();
-    private static TreeSet<String> numberPlatesTreeSet = new TreeSet<>();
+    private static HashSet<String> numberPlatesHashSet;
+    private static TreeSet<String> numberPlatesTreeSet;
 
     public PlatesRepository() {
+        numberPlatesArrayList = new ArrayList<>();
+        numberPlatesHashSet = new HashSet<>();
+        numberPlatesTreeSet = new TreeSet<>();
+    }
 
+    public void add() {
+
+    }
+
+    public int search() {
+
+        return -1;
     }
 
     private static void generateNumberPlatesCollections() {
