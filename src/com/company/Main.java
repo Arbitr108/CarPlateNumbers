@@ -15,30 +15,25 @@ public class Main {
     private static TreeSet<String> numberPlatesTreeSet = new TreeSet<>();
     private static ArrayList<String> regionNumbers;
 
-    private static final String FORMAT_INFO = (char) 27 + "[37m";
-    private static final String FORMAT_SUCCESS = (char) 27 + "[32m";
-    private static final String FORMAT_FAIL = (char) 27 + "[31m";
-    private static final String FORMAT_END = (char) 27 + "[0m";
-
 
     public static void main(String[] args) {
 
-        System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
+        System.out.print(Format.INFO + "Идет генерация номеров..." + Format.END);
         regionNumbers = getRegions();
         generateGeneralSeriaPlates();
         generateSpecialSeriaPlates();
 
-        System.out.print(FORMAT_INFO + "\rПодготовка данных..." + FORMAT_END);
+        System.out.print(Format.INFO + "\rПодготовка данных..." + Format.END);
         numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
         numberPlatesHashSet.addAll(numberPlatesArrayList);
         numberPlatesTreeSet.addAll(numberPlatesArrayList);
         Collections.shuffle(numberPlatesArrayList);
         Collections.sort(numberPlatesArrayListSorted);
 
-        System.out.println("\r" + FORMAT_INFO + "Номеров в несортированном ArrayList: " + FORMAT_SUCCESS + numberPlatesArrayList.size() + FORMAT_END);
-        System.out.println("\r" + FORMAT_INFO + "Номеров в сортированном ArrayList: " + FORMAT_SUCCESS + numberPlatesArrayListSorted.size() + FORMAT_END);
-        System.out.println("\r" + FORMAT_INFO + "Номеров в HashSet: " + FORMAT_SUCCESS + numberPlatesHashSet.size() + FORMAT_END);
-        System.out.println("\r" + FORMAT_INFO + "Номеров в TreeSet: " + FORMAT_SUCCESS + numberPlatesTreeSet.size() + FORMAT_END);
+        System.out.println("\r" + Format.INFO + "Номеров в несортированном ArrayList: " + Format.SUCCESS + numberPlatesArrayList.size() + Format.END);
+        System.out.println("\r" + Format.INFO + "Номеров в сортированном ArrayList: " + Format.SUCCESS + numberPlatesArrayListSorted.size() + Format.END);
+        System.out.println("\r" + Format.INFO + "Номеров в HashSet: " + Format.SUCCESS + numberPlatesHashSet.size() + Format.END);
+        System.out.println("\r" + Format.INFO + "Номеров в TreeSet: " + Format.SUCCESS + numberPlatesTreeSet.size() + Format.END);
 
         for (; ; ) {
             System.out.println("Введите номер для поиска: ");
@@ -91,9 +86,9 @@ public class Main {
                 break;
         }
         if (result < 0) {
-            System.out.println(FORMAT_FAIL + "\r" + searchTarget + ". Номера " + input + " нет в базе" + "(" + formatter.format(elapsed) + "ms)" + FORMAT_END);
+            System.out.println(Format.FAIL + "\r" + searchTarget + ". Номера " + input + " нет в базе" + "(" + formatter.format(elapsed) + "ms)" + Format.END);
         } else
-            System.out.println(FORMAT_SUCCESS + "\r" + searchTarget + ". Номер " + input + " найден" + "(" + formatter.format(elapsed) + "ms)" + FORMAT_END);
+            System.out.println(Format.SUCCESS + "\r" + searchTarget + ". Номер " + input + " найден" + "(" + formatter.format(elapsed) + "ms)" + Format.END);
     }
 
     private static int search(String data, Collection<String> set) {
