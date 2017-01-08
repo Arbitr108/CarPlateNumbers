@@ -42,6 +42,10 @@ public class PlateRepository {
         throw new RuntimeException("The unknown SearchType");
     }
 
+    public static void add(Plate plate) {
+        numberPlatesArrayList.add(plate.getNumberPlate());
+    }
+
     private static int search(String data, Collection<String> set) {
         for (String item : set) {
             if (item.equals(data))
@@ -55,7 +59,7 @@ public class PlateRepository {
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
                 for (int y = 0; y < 1000; y++) {
-                    addToCollection(PlateGenerator.generate(y, region, allowedLetter, allowedLetter, allowedLetter));
+                    add(new Plate(y, region, allowedLetter, allowedLetter, allowedLetter));
                 }
             }
         }
@@ -66,29 +70,24 @@ public class PlateRepository {
         String[] piterRegionNumbersList = {"78", "98"};
         for (String region : regionNumbers) {
             for (int y = 0; y < 1000; y++) {
-                addToCollection(PlateGenerator.generate(y, region, 'Е', 'К', 'Х'));
+                add(new Plate(y, region, 'Е', 'К', 'Х'));
                 if (Arrays.asList(moscowRegionNumbersList).contains(region)) {
-                    addToCollection(PlateGenerator.generate(y, region, 'А', 'М', 'Р'));
-                    addToCollection(PlateGenerator.generate(y, region, 'А', 'О', 'О'));
-                    addToCollection(PlateGenerator.generate(y, region, 'А', 'М', 'О'));
-                    addToCollection(PlateGenerator.generate(y, region, 'В', 'О', 'О'));
-                    addToCollection(PlateGenerator.generate(y, region, 'С', 'О', 'О'));
-                    addToCollection(PlateGenerator.generate(y, region, 'М', 'М', 'Р'));
-                    addToCollection(PlateGenerator.generate(y, region, 'Р', 'М', 'Р'));
+                    add(new Plate(y, region, 'А', 'М', 'Р'));
+                    add(new Plate(y, region, 'А', 'О', 'О'));
+                    add(new Plate(y, region, 'А', 'М', 'О'));
+                    add(new Plate(y, region, 'В', 'О', 'О'));
+                    add(new Plate(y, region, 'С', 'О', 'О'));
+                    add(new Plate(y, region, 'М', 'М', 'Р'));
+                    add(new Plate(y, region, 'Р', 'М', 'Р'));
                 } else if (Arrays.asList(piterRegionNumbersList).contains(region)) {
-                    addToCollection(PlateGenerator.generate(y, region, 'О', 'К', 'О'));
-                    addToCollection(PlateGenerator.generate(y, region, 'О', 'А', 'О'));
-                    addToCollection(PlateGenerator.generate(y, region, 'О', 'О', 'С'));
-                    addToCollection(PlateGenerator.generate(y, region, 'О', 'О', 'М'));
-                    addToCollection(PlateGenerator.generate(y, region, 'О', 'Т', 'Т'));
+                    add(new Plate(y, region, 'О', 'К', 'О'));
+                    add(new Plate(y, region, 'О', 'А', 'О'));
+                    add(new Plate(y, region, 'О', 'О', 'С'));
+                    add(new Plate(y, region, 'О', 'О', 'М'));
+                    add(new Plate(y, region, 'О', 'Т', 'Т'));
                 }
             }
         }
-    }
-
-    private static void addToCollection(String data) {
-
-        numberPlatesArrayList.add(data);
     }
 
     private static ArrayList<String> getRegions() {
