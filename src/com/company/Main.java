@@ -43,15 +43,6 @@ public class Main {
         System.out.println("\r" + FORMAT_INFO + "Номеров в HashSet: " + FORMAT_SUCCESS + numberPlatesHashSet.size() + FORMAT_END);
         System.out.println("\r" + FORMAT_INFO + "Номеров в TreeSet: " + FORMAT_SUCCESS + numberPlatesTreeSet.size() + FORMAT_END);
 
-//        for (String item : numberPlatesArrayListSorted){
-//            for(String candidate : numberPlatesArrayListSorted) {
-//                if (item.equals(candidate)) {
-//                    System.out.println(candidate);
-//                }
-//            }
-//        }
-        //System.out.println(numberPlatesArrayList.get(1500000));
-
         for (; ; ) {
             System.out.println("Введите номер для поиска: ");
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
