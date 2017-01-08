@@ -140,7 +140,6 @@ public class Main {
                     addToCollection(generate(y, region, 'В', 'О', 'О'));
                     addToCollection(generate(y, region, 'С', 'О', 'О'));
                     addToCollection(generate(y, region, 'М', 'М', 'Р'));
-                    addToCollection(generate(y, region, 'М', 'М', 'Р'));
                     addToCollection(generate(y, region, 'Р', 'М', 'Р'));
                 } else if (Arrays.asList(piterRegionNumbersList).contains(region)) {
                     addToCollection(generate(y, region, 'О', 'К', 'О'));
