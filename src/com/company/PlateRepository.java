@@ -6,11 +6,11 @@ import java.util.*;
  * Created by asus on 08.01.2017.
  */
 public class PlateRepository {
-    private static ArrayList<String> numberPlatesArrayList;
-    private static ArrayList<String> numberPlatesArrayListSorted;
-    private static HashSet<String> numberPlatesHashSet;
-    private static TreeSet<String> numberPlatesTreeSet;
-    private static ArrayList<String> regionNumbers;
+    private ArrayList<String> numberPlatesArrayList;
+    private ArrayList<String> numberPlatesArrayListSorted;
+    private HashSet<String> numberPlatesHashSet;
+    private TreeSet<String> numberPlatesTreeSet;
+    private ArrayList<String> regionNumbers;
 
 
     public PlateRepository() {
@@ -28,7 +28,7 @@ public class PlateRepository {
         Collections.sort(numberPlatesArrayListSorted);
     }
 
-    public static int search(String data, SearchType type) {
+    public int search(String data, SearchType type) {
         switch (type) {
             case UNSORTED:
                 return search(data, numberPlatesArrayList);
@@ -42,11 +42,18 @@ public class PlateRepository {
         throw new RuntimeException("The unknown SearchType");
     }
 
-    public static void add(Plate plate) {
+    public void add(Plate plate) {
         numberPlatesArrayList.add(plate.getNumberPlate());
     }
 
-    private static int search(String data, Collection<String> set) {
+    public void printStatistics() {
+        System.out.println("\r" + Format.INFO + "Номеров в несортированном ArrayList: " + Format.SUCCESS + numberPlatesArrayList.size() + Format.END);
+        System.out.println("\r" + Format.INFO + "Номеров в сортированном ArrayList: " + Format.SUCCESS + numberPlatesArrayListSorted.size() + Format.END);
+        System.out.println("\r" + Format.INFO + "Номеров в HashSet: " + Format.SUCCESS + numberPlatesHashSet.size() + Format.END);
+        System.out.println("\r" + Format.INFO + "Номеров в TreeSet: " + Format.SUCCESS + numberPlatesTreeSet.size() + Format.END);
+    }
+
+    private int search(String data, Collection<String> set) {
         for (String item : set) {
             if (item.equals(data))
                 return 1;
@@ -54,7 +61,7 @@ public class PlateRepository {
         return -1;
     }
 
-    private static void getGeneralSeriaPlates() {
+    private void getGeneralSeriaPlates() {
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
@@ -65,7 +72,7 @@ public class PlateRepository {
         }
     }
 
-    private static void getSpecialSeriaPlates() {
+    private void getSpecialSeriaPlates() {
         String[] moscowRegionNumbersList = {"77", "97", "99", "177", "197"};
         String[] piterRegionNumbersList = {"78", "98"};
         for (String region : regionNumbers) {
@@ -90,7 +97,7 @@ public class PlateRepository {
         }
     }
 
-    private static ArrayList<String> getRegions() {
+    private ArrayList<String> getRegions() {
         ArrayList<String> regionNumbers = new ArrayList<>();
         //Стандартные коды
         for (int i = 1; i < 100; i++) {
