@@ -8,13 +8,13 @@ import java.util.TreeSet;
 /**
  * Created by asus on 08.01.2017.
  */
-public class PlatesRepository {
+public class PlateRepository {
     private static ArrayList<String> numberPlatesArrayList;
     private static ArrayList<String> numberPlatesArrayListSorted;
     private static HashSet<String> numberPlatesHashSet;
     private static TreeSet<String> numberPlatesTreeSet;
 
-    public PlatesRepository() {
+    public PlateRepository() {
         numberPlatesArrayList = new ArrayList<>();
         numberPlatesHashSet = new HashSet<>();
         numberPlatesTreeSet = new TreeSet<>();

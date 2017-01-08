@@ -116,7 +116,9 @@ public class Main {
 
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
-                fillCommonList(region, allowedLetter);
+                for (int y = 0; y < 1000; y++) {
+                    addToCollection(generate(y, region, allowedLetter, allowedLetter, allowedLetter));
+                }
             }
             fillRegionUniqueSpecialNumbersList(region);
         }
@@ -155,12 +157,6 @@ public class Main {
 
     private static void addToCollection(String data) {
         numberPlatesArrayList.add(data);
-    }
-
-    private static void fillCommonList(String region, char allowedLetter) {
-        for (int y = 0; y < 1000; y++) {
-            addToCollection(generate(y, region, allowedLetter, allowedLetter, allowedLetter));
-        }
     }
 
     private static String generate(int order, String region, char firstLetter, char secondLetter, char thirdLetter) {
