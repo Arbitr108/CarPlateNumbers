@@ -55,7 +55,7 @@ public class PlateRepository {
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
                 for (int y = 0; y < 1000; y++) {
-                    addToCollection(generate(y, region, allowedLetter, allowedLetter, allowedLetter));
+                    addToCollection(PlateGenerator.generate(y, region, allowedLetter, allowedLetter, allowedLetter));
                 }
             }
         }
@@ -66,21 +66,21 @@ public class PlateRepository {
         String[] piterRegionNumbersList = {"78", "98"};
         for (String region : regionNumbers) {
             for (int y = 0; y < 1000; y++) {
-                addToCollection(generate(y, region, 'Е', 'К', 'Х'));
+                addToCollection(PlateGenerator.generate(y, region, 'Е', 'К', 'Х'));
                 if (Arrays.asList(moscowRegionNumbersList).contains(region)) {
-                    addToCollection(generate(y, region, 'А', 'М', 'Р'));
-                    addToCollection(generate(y, region, 'А', 'О', 'О'));
-                    addToCollection(generate(y, region, 'А', 'М', 'О'));
-                    addToCollection(generate(y, region, 'В', 'О', 'О'));
-                    addToCollection(generate(y, region, 'С', 'О', 'О'));
-                    addToCollection(generate(y, region, 'М', 'М', 'Р'));
-                    addToCollection(generate(y, region, 'Р', 'М', 'Р'));
+                    addToCollection(PlateGenerator.generate(y, region, 'А', 'М', 'Р'));
+                    addToCollection(PlateGenerator.generate(y, region, 'А', 'О', 'О'));
+                    addToCollection(PlateGenerator.generate(y, region, 'А', 'М', 'О'));
+                    addToCollection(PlateGenerator.generate(y, region, 'В', 'О', 'О'));
+                    addToCollection(PlateGenerator.generate(y, region, 'С', 'О', 'О'));
+                    addToCollection(PlateGenerator.generate(y, region, 'М', 'М', 'Р'));
+                    addToCollection(PlateGenerator.generate(y, region, 'Р', 'М', 'Р'));
                 } else if (Arrays.asList(piterRegionNumbersList).contains(region)) {
-                    addToCollection(generate(y, region, 'О', 'К', 'О'));
-                    addToCollection(generate(y, region, 'О', 'А', 'О'));
-                    addToCollection(generate(y, region, 'О', 'О', 'С'));
-                    addToCollection(generate(y, region, 'О', 'О', 'М'));
-                    addToCollection(generate(y, region, 'О', 'Т', 'Т'));
+                    addToCollection(PlateGenerator.generate(y, region, 'О', 'К', 'О'));
+                    addToCollection(PlateGenerator.generate(y, region, 'О', 'А', 'О'));
+                    addToCollection(PlateGenerator.generate(y, region, 'О', 'О', 'С'));
+                    addToCollection(PlateGenerator.generate(y, region, 'О', 'О', 'М'));
+                    addToCollection(PlateGenerator.generate(y, region, 'О', 'Т', 'Т'));
                 }
             }
         }
