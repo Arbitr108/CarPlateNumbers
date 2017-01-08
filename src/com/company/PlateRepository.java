@@ -87,18 +87,8 @@ public class PlateRepository {
     }
 
     private static void addToCollection(String data) {
-        numberPlatesArrayList.add(data);
-    }
 
-    private static String generate(int order, String region, char firstLetter, char secondLetter, char thirdLetter) {
-        String number;
-        if (order < 10)
-            number = "00" + String.valueOf(order);
-        else if (order >= 10 && order < 100)
-            number = "0" + String.valueOf(order);
-        else
-            number = String.valueOf(order);
-        return firstLetter + number + secondLetter + thirdLetter + region;
+        numberPlatesArrayList.add(data);
     }
 
     private static ArrayList<String> getRegions() {
