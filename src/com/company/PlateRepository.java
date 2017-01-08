@@ -14,12 +14,11 @@ public class PlateRepository {
 
 
     public PlateRepository() {
-        numberPlatesArrayList = new ArrayList<>();
-
         System.out.print(Format.INFO + "Идет генерация номеров..." + Format.END);
+        numberPlatesArrayList = new ArrayList<>();
         regionNumbers = getRegions();
-        generateGeneralSeriaPlates();
-        generateSpecialSeriaPlates();
+        getGeneralSeriaPlates();
+        getSpecialSeriaPlates();
 
         System.out.print(Format.INFO + "\rПодготовка данных..." + Format.END);
         numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
@@ -51,7 +50,7 @@ public class PlateRepository {
         return -1;
     }
 
-    private static void generateGeneralSeriaPlates() {
+    private static void getGeneralSeriaPlates() {
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
         for (String region : regionNumbers) {
             for (char allowedLetter : allowedLetters) {
@@ -62,7 +61,7 @@ public class PlateRepository {
         }
     }
 
-    private static void generateSpecialSeriaPlates() {
+    private static void getSpecialSeriaPlates() {
         String[] moscowRegionNumbersList = {"77", "97", "99", "177", "197"};
         String[] piterRegionNumbersList = {"78", "98"};
         for (String region : regionNumbers) {
