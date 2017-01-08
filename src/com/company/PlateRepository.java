@@ -12,22 +12,18 @@ public class PlateRepository {
     private static TreeSet<String> numberPlatesTreeSet;
     private static ArrayList<String> regionNumbers;
 
-    private static final String FORMAT_INFO = (char) 27 + "[37m";
-    private static final String FORMAT_SUCCESS = (char) 27 + "[32m";
-    private static final String FORMAT_FAIL = (char) 27 + "[31m";
-    private static final String FORMAT_END = (char) 27 + "[0m";
 
     public PlateRepository() {
         numberPlatesArrayList = new ArrayList<>();
         numberPlatesHashSet = new HashSet<>();
         numberPlatesTreeSet = new TreeSet<>();
 
-        System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
+        System.out.print(Format.INFO + "Идет генерация номеров..." + Format.END);
         regionNumbers = getRegions();
         generateGeneralSeriaPlates();
         generateSpecialSeriaPlates();
 
-        System.out.print(FORMAT_INFO + "\rПодготовка данных..." + FORMAT_END);
+        System.out.print(Format.INFO + "\rПодготовка данных..." + Format.END);
         numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
         numberPlatesHashSet.addAll(numberPlatesArrayList);
         numberPlatesTreeSet.addAll(numberPlatesArrayList);
