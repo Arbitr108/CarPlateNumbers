@@ -30,7 +30,17 @@ public class PlateRepository {
     }
 
     public static int search(String data, SearchType type) {
-        return -1;
+        switch (type) {
+            case UNSORTED:
+                return search(data, numberPlatesArrayList);
+            case HASH_SET:
+                return search(data, numberPlatesHashSet);
+            case TREE_SET:
+                return search(data, numberPlatesTreeSet);
+            case BINARY:
+                return Collections.binarySearch(numberPlatesArrayListSorted, data);
+        }
+        throw new RuntimeException("The unknown SearchType");
     }
 
     private static int search(String data, Collection<String> set) {
