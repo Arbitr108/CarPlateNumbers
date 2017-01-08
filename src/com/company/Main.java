@@ -20,9 +20,6 @@ public class Main {
     private static final String FORMAT_FAIL = (char) 27 + "[31m";
     private static final String FORMAT_END = (char) 27 + "[0m";
 
-    private enum SearchType {
-        UNSORTED, HASH_SET, TREE_SET, BINARY
-    }
 
     public static void main(String[] args) {
 

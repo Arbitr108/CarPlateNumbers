@@ -15,8 +15,6 @@ public class PlateRepository {
 
     public PlateRepository() {
         numberPlatesArrayList = new ArrayList<>();
-        numberPlatesHashSet = new HashSet<>();
-        numberPlatesTreeSet = new TreeSet<>();
 
         System.out.print(Format.INFO + "Идет генерация номеров..." + Format.END);
         regionNumbers = getRegions();
@@ -25,12 +23,15 @@ public class PlateRepository {
 
         System.out.print(Format.INFO + "\rПодготовка данных..." + Format.END);
         numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
-        numberPlatesHashSet.addAll(numberPlatesArrayList);
-        numberPlatesTreeSet.addAll(numberPlatesArrayList);
+        numberPlatesHashSet = new HashSet<>(numberPlatesArrayList);
+        numberPlatesTreeSet = new TreeSet<>(numberPlatesArrayList);
         Collections.shuffle(numberPlatesArrayList);
         Collections.sort(numberPlatesArrayListSorted);
     }
 
+    public static int search(String data, SearchType type) {
+        return -1;
+    }
 
     private static int search(String data, Collection<String> set) {
         for (String item : set) {
