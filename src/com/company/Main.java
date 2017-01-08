@@ -26,9 +26,13 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.print(FORMAT_INFO + "Идет генерация номеров..." + FORMAT_END);
-        generateNumberPlatesCollections();
+        generateGeneralSeriaPlates();
+        generateSpecialSeriaPlates();
 
         System.out.print(FORMAT_INFO + "\rПодготовка данных..." + FORMAT_END);
+        numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
+        numberPlatesHashSet.addAll(numberPlatesArrayList);
+        numberPlatesTreeSet.addAll(numberPlatesArrayList);
         Collections.shuffle(numberPlatesArrayList);
         Collections.sort(numberPlatesArrayListSorted);
 
@@ -110,7 +114,7 @@ public class Main {
         return -1;
     }
 
-    private static void generateNumberPlatesCollections() {
+    private static void generateGeneralSeriaPlates() {
         ArrayList<String> regionNumbers = getRegions();
         char[] allowedLetters = {'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'};
 
@@ -120,37 +124,32 @@ public class Main {
                     addToCollection(generate(y, region, allowedLetter, allowedLetter, allowedLetter));
                 }
             }
-            fillRegionUniqueSpecialNumbersList(region);
         }
-
-        numberPlatesArrayListSorted = new ArrayList<>(numberPlatesArrayList);
-        numberPlatesHashSet.addAll(numberPlatesArrayList);
-        numberPlatesTreeSet.addAll(numberPlatesArrayList);
-
     }
 
-
-    private static void fillRegionUniqueSpecialNumbersList(String region) {
+    private static void generateSpecialSeriaPlates() {
+        ArrayList<String> regionNumbers = getRegions();
         String[] moscowRegionNumbersList = {"77", "97", "99", "177", "197"};
         String[] piterRegionNumbersList = {"78", "98"};
-        for (int y = 0; y < 1000; y++) {
-            addToCollection(generate(y, region, 'Е', 'К', 'Х'));
-            if (Arrays.asList(moscowRegionNumbersList).contains(region)) {
-                addToCollection(generate(y, region, 'А', 'М', 'Р'));
-                addToCollection(generate(y, region, 'А', 'О', 'О'));
-                addToCollection(generate(y, region, 'А', 'М', 'О'));
-                addToCollection(generate(y, region, 'В', 'О', 'О'));
-                addToCollection(generate(y, region, 'С', 'О', 'О'));
-                addToCollection(generate(y, region, 'М', 'М', 'Р'));
-                addToCollection(generate(y, region, 'М', 'М', 'Р'));
-                addToCollection(generate(y, region, 'Р', 'М', 'Р'));
-            }
-            if (Arrays.asList(piterRegionNumbersList).contains(region)) {
-                addToCollection(generate(y, region, 'О', 'К', 'О'));
-                addToCollection(generate(y, region, 'О', 'А', 'О'));
-                addToCollection(generate(y, region, 'О', 'О', 'С'));
-                addToCollection(generate(y, region, 'О', 'О', 'М'));
-                addToCollection(generate(y, region, 'О', 'Т', 'Т'));
+        for (String region : regionNumbers) {
+            for (int y = 0; y < 1000; y++) {
+                addToCollection(generate(y, region, 'Е', 'К', 'Х'));
+                if (Arrays.asList(moscowRegionNumbersList).contains(region)) {
+                    addToCollection(generate(y, region, 'А', 'М', 'Р'));
+                    addToCollection(generate(y, region, 'А', 'О', 'О'));
+                    addToCollection(generate(y, region, 'А', 'М', 'О'));
+                    addToCollection(generate(y, region, 'В', 'О', 'О'));
+                    addToCollection(generate(y, region, 'С', 'О', 'О'));
+                    addToCollection(generate(y, region, 'М', 'М', 'Р'));
+                    addToCollection(generate(y, region, 'М', 'М', 'Р'));
+                    addToCollection(generate(y, region, 'Р', 'М', 'Р'));
+                } else if (Arrays.asList(piterRegionNumbersList).contains(region)) {
+                    addToCollection(generate(y, region, 'О', 'К', 'О'));
+                    addToCollection(generate(y, region, 'О', 'А', 'О'));
+                    addToCollection(generate(y, region, 'О', 'О', 'С'));
+                    addToCollection(generate(y, region, 'О', 'О', 'М'));
+                    addToCollection(generate(y, region, 'О', 'Т', 'Т'));
+                }
             }
         }
     }
