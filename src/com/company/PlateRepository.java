@@ -28,16 +28,16 @@ public class PlateRepository {
         Collections.sort(numberPlatesArrayListSorted);
     }
 
-    public int search(String data, SearchType type) {
+    public boolean search(String data, SearchType type) {
         switch (type) {
             case UNSORTED:
-                return numberPlatesArrayList.contains(data) ? 1 : -1;
+                return numberPlatesArrayList.contains(data);
             case HASH_SET:
-                return numberPlatesHashSet.contains(data) ? 1 : -1;
+                return numberPlatesHashSet.contains(data);
             case TREE_SET:
-                return numberPlatesTreeSet.contains(data) ? 1 : -1;
+                return numberPlatesTreeSet.contains(data);
             case BINARY:
-                return Collections.binarySearch(numberPlatesArrayListSorted, data);
+                return Collections.binarySearch(numberPlatesArrayListSorted, data) >= 0;
         }
         throw new RuntimeException("The unknown SearchType");
     }

@@ -20,20 +20,20 @@ public class Main {
                 String input = reader.readLine().trim().toUpperCase();
                 if (!input.isEmpty()) {
                     long start = System.nanoTime();
-                    int position = platesRepository.search(input, SearchType.UNSORTED);
-                    handleResult(position, input, getElapsedTime(start), SearchType.UNSORTED);
+                    boolean found = platesRepository.search(input, SearchType.UNSORTED);
+                    handleResult(found, input, getElapsedTime(start), SearchType.UNSORTED);
 
                     start = System.nanoTime();
-                    position = platesRepository.search(input, SearchType.BINARY);
-                    handleResult(position, input, getElapsedTime(start), SearchType.BINARY);
+                    found = platesRepository.search(input, SearchType.BINARY);
+                    handleResult(found, input, getElapsedTime(start), SearchType.BINARY);
 
                     start = System.nanoTime();
-                    position = platesRepository.search(input, SearchType.HASH_SET);
-                    handleResult(position, input, getElapsedTime(start), SearchType.HASH_SET);
+                    found = platesRepository.search(input, SearchType.HASH_SET);
+                    handleResult(found, input, getElapsedTime(start), SearchType.HASH_SET);
 
                     start = System.nanoTime();
-                    position = platesRepository.search(input, SearchType.TREE_SET);
-                    handleResult(position, input, getElapsedTime(start), SearchType.TREE_SET);
+                    found = platesRepository.search(input, SearchType.TREE_SET);
+                    handleResult(found, input, getElapsedTime(start), SearchType.TREE_SET);
 
                 }
             } catch (IOException e) {
@@ -46,7 +46,7 @@ public class Main {
         return (System.nanoTime() - start) / 1000000f;
     }
 
-    private static void handleResult(int result, String input, float elapsed, SearchType type) {
+    private static void handleResult(boolean result, String input, float elapsed, SearchType type) {
         String searchTarget = "";
         NumberFormat formatter = new DecimalFormat("#0.000000");
         switch (type) {
@@ -63,7 +63,7 @@ public class Main {
                 searchTarget = "Бинарный поиск";
                 break;
         }
-        if (result < 0) {
+        if (!result) {
             System.out.println(Format.FAIL + "\r" + searchTarget + ". Номера " + input + " нет в базе" + "(" + formatter.format(elapsed) + "ms)" + Format.END);
         } else
             System.out.println(Format.SUCCESS + "\r" + searchTarget + ". Номер " + input + " найден" + "(" + formatter.format(elapsed) + "ms)" + Format.END);
