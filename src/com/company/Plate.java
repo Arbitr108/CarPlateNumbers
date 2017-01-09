@@ -20,10 +20,8 @@ public class Plate {
 
     public String getNumberPlate() {
         String number;
-        if (this.digit < 10)
-            number = "00" + String.valueOf(digit);
-        else if (digit >= 10 && digit < 100)
-            number = "0" + String.valueOf(digit);
+        if (this.digit < 100)
+            number = String.format("%03d", digit);
         else
             number = String.valueOf(digit);
         return firstLetter + number + secondLetter + thirdLetter + region;
