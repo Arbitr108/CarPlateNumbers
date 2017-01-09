@@ -31,7 +31,7 @@ public class PlateRepository {
     public int search(String data, SearchType type) {
         switch (type) {
             case UNSORTED:
-                return search(data, numberPlatesArrayList);
+                return numberPlatesArrayList.contains(data) ? 1 : -1;
             case HASH_SET:
                 return numberPlatesHashSet.contains(data) ? 1 : -1;
             case TREE_SET:
@@ -48,18 +48,6 @@ public class PlateRepository {
 
     public void printStatistics() {
         System.out.println("\r" + Format.INFO + "Номеров в базе: " + Format.SUCCESS + numberPlatesArrayList.size() + Format.END);
-//        System.out.println("\r" + Format.INFO + "Номеров в несортированном ArrayList: " + Format.SUCCESS + numberPlatesArrayList.size() + Format.END);
-//        System.out.println("\r" + Format.INFO + "Номеров в сортированном ArrayList: " + Format.SUCCESS + numberPlatesArrayListSorted.size() + Format.END);
-//        System.out.println("\r" + Format.INFO + "Номеров в HashSet: " + Format.SUCCESS + numberPlatesHashSet.size() + Format.END);
-//        System.out.println("\r" + Format.INFO + "Номеров в TreeSet: " + Format.SUCCESS + numberPlatesTreeSet.size() + Format.END);
-    }
-
-    private int search(String data, Collection<String> set) {
-        for (String item : set) {
-            if (item.equals(data))
-                return 1;
-        }
-        return -1;
     }
 
     private void getGeneralSeriaPlates() {
